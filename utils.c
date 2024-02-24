@@ -1,6 +1,10 @@
 #include "utils.h"
+#define UP 1
+#define DOWN 2
+#define LEFT 3
+#define RIGHT 4
 
-void processEvents(SDL_Window *window, int *done) {
+void processEvents(SDL_Window *window, int *done, SDL_Rect *rect) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
@@ -12,6 +16,9 @@ void processEvents(SDL_Window *window, int *done) {
                     case SDLK_ESCAPE:
                         *done = 1;
                     break;
+                    case SDLK_UP:
+                        move(UP, rect);
+                    break;
                 }
             }
             break;
@@ -20,13 +27,12 @@ void processEvents(SDL_Window *window, int *done) {
     }
 }
 
-void doRender(SDL_Renderer *renderer) {
+void doRender(SDL_Renderer *renderer, SDL_Rect *rect) {
     SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
     SDL_RenderClear(renderer);
 
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    SDL_Rect rect = { 220, 140, 200, 200 };
-    SDL_RenderFillRect(renderer, &rect);
+    SDL_RenderFillRect(renderer, rect);
 
     SDL_RenderPresent(renderer);
 }
@@ -48,4 +54,21 @@ void finishSDL(SDL_Window **window, SDL_Renderer **renderer) {
     SDL_DestroyRenderer(*renderer);
     SDL_DestroyWindow(*window);
     SDL_Quit();
+}
+
+void move(int direction, SDL_Rect *rect) {
+    switch (direction) {
+        case UP:
+            
+        break;
+        case DOWN:
+            printf("Moving down\n");
+        break;
+        case LEFT:
+            printf("Moving left\n");
+        break;
+        case RIGHT:
+            printf("Moving right\n");
+        break;
+    }
 }

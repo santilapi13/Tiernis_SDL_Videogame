@@ -9,9 +9,11 @@ int main(int argc, char *argv[]) {
 
     initializeSDL(&window, &renderer);
 
+    SDL_Rect rect = { 220, 140, 200, 200 };
+
     while (!done) {
-        processEvents(window, &done);
-        doRender(renderer);
+        processEvents(window, &done, &rect);
+        doRender(renderer, &rect);
         SDL_Delay(100);
     }
 
