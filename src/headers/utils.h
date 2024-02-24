@@ -1,4 +1,5 @@
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include "../scripts/player.c"
 
 typedef struct {
@@ -8,4 +9,4 @@ typedef struct {
 void processEvents(SDL_Window *window, int *done, GameState *game);
 void doRender(SDL_Renderer *renderer, GameState *game);
 void initializeSDL(SDL_Window **window, SDL_Renderer **renderer);
-void finishSDL(SDL_Window **window, SDL_Renderer **renderer);
+void finishSDL(SDL_Window **window, SDL_Renderer **renderer, GameState *game);

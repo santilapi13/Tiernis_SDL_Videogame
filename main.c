@@ -5,19 +5,18 @@ int main(int argc, char *argv[]) {
     SDL_Window *window;
     SDL_Renderer *renderer;
     int done = 0;
+    GameState game;
 
     initializeSDL(&window, &renderer);
-
-    GameState game;
-    playerInit(&(game.player));
+    playerInit(&game.player, renderer);
 
     while (!done) {
         processEvents(window, &done, &game);
         doRender(renderer, &game);
-        SDL_Delay(30);
+        SDL_Delay(10);
     }
 
-    finishSDL(&window, &renderer);
+    finishSDL(&window, &renderer, &game);
 
     return 0;
 }
