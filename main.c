@@ -1,6 +1,5 @@
 #include <stdio.h>
-#include "utils.h"
-#include "utils.c"
+#include "src/scripts/utils.c"
 
 int main(int argc, char *argv[]) {
     SDL_Window *window;
@@ -9,12 +8,13 @@ int main(int argc, char *argv[]) {
 
     initializeSDL(&window, &renderer);
 
-    SDL_Rect rect = { 220, 140, 200, 200 };
+    GameState game;
+    playerInit(&(game.player));
 
     while (!done) {
-        processEvents(window, &done, &rect);
-        doRender(renderer, &rect);
-        SDL_Delay(100);
+        processEvents(window, &done, &game);
+        doRender(renderer, &game);
+        SDL_Delay(30);
     }
 
     finishSDL(&window, &renderer);

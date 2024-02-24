@@ -1,10 +1,10 @@
-#include "utils.h"
+#include "../headers/utils.h"
 #define UP 1
 #define DOWN 2
 #define LEFT 3
 #define RIGHT 4
 
-void processEvents(SDL_Window *window, int *done, SDL_Rect *rect) {
+void processEvents(SDL_Window *window, int *done, GameState *game) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
@@ -12,12 +12,8 @@ void processEvents(SDL_Window *window, int *done, SDL_Rect *rect) {
                 *done = 1;
             break;
             case SDL_KEYDOWN: {
-                switch (event.key.keysym.sym) {
-                    case SDLK_ESCAPE:
-                        *done = 1;
-                    break;
-                    case SDLK_UP:
-                        move(UP, rect);
+                if (event.key.keysym.sym == SDLK_ESCAPE) {
+                    *done = 1;
                     break;
                 }
             }
@@ -25,14 +21,18 @@ void processEvents(SDL_Window *window, int *done, SDL_Rect *rect) {
         
         }
     }
+
+    move(SDL_GetKeyboardState(NULL), &game->player);
 }
 
-void doRender(SDL_Renderer *renderer, SDL_Rect *rect) {
+void doRender(SDL_Renderer *renderer, GameState *game) {
     SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
     SDL_RenderClear(renderer);
 
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    SDL_RenderFillRect(renderer, rect);
+
+    SDL_Rect rect = {game->player.x, game->player.y, 100, 100};
+    SDL_RenderFillRect(renderer, &rect);
 
     SDL_RenderPresent(renderer);
 }
@@ -47,28 +47,11 @@ void initializeSDL(SDL_Window **window, SDL_Renderer **renderer) {
         0
     );
 
-    *renderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_ACCELERATED);
+    *renderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 }
 
 void finishSDL(SDL_Window **window, SDL_Renderer **renderer) {
     SDL_DestroyRenderer(*renderer);
     SDL_DestroyWindow(*window);
     SDL_Quit();
-}
-
-void move(int direction, SDL_Rect *rect) {
-    switch (direction) {
-        case UP:
-            
-        break;
-        case DOWN:
-            printf("Moving down\n");
-        break;
-        case LEFT:
-            printf("Moving left\n");
-        break;
-        case RIGHT:
-            printf("Moving right\n");
-        break;
-    }
 }
