@@ -1,8 +1,4 @@
 #include "../headers/utils.h"
-#define UP 1
-#define DOWN 2
-#define LEFT 3
-#define RIGHT 4
 
 void processEvents(SDL_Window *window, int *done, GameState *game) {
     SDL_Event event;
@@ -26,14 +22,10 @@ void processEvents(SDL_Window *window, int *done, GameState *game) {
 }
 
 void doRender(SDL_Renderer *renderer, GameState *game) {
-    SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+    SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
     SDL_RenderClear(renderer);
 
-    //SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-
-    SDL_Rect playerRect = {game->player.x, game->player.y, 64, 100};
-    //SDL_RenderFillRect(renderer, &playerRect);
-    SDL_RenderCopy(renderer, game->player.texture, NULL, &playerRect);   
+    SDL_RenderCopy(renderer, game->player.texture, NULL, &game->player.rect);  
 
     SDL_RenderPresent(renderer);
 }
@@ -43,12 +35,16 @@ void initializeSDL(SDL_Window **window, SDL_Renderer **renderer) {
     *window = SDL_CreateWindow("Jueguito :)",
         SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED,
-        640, 
-        480,
+        SCREEN_WIDTH, 
+        SCREEN_HEIGHT,
         0
     );
 
     *renderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+}
+
+void loadGame(GameState *game, SDL_Renderer *renderer) {
+    playerInit(&game->player, renderer, SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
 }
 
 void finishSDL(SDL_Window **window, SDL_Renderer **renderer, GameState *game) {

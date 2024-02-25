@@ -8,7 +8,7 @@ int main(int argc, char *argv[]) {
     GameState game;
 
     initializeSDL(&window, &renderer);
-    playerInit(&game.player, renderer);
+    loadGame(&game, renderer);
 
     while (!done) {
         processEvents(window, &done, &game);

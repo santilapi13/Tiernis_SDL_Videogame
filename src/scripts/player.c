@@ -1,9 +1,10 @@
 #include "../headers/player.h"
 
-void playerInit(Player *player, SDL_Renderer *renderer) {
-    player->x = 220;
-    player->y = 140;
+void playerInit(Player *player, SDL_Renderer *renderer, int x, int y) {
+    player->x = x;
+    player->y = y;
     player->speed = 5;
+    player->rect = (SDL_Rect) {player->x - PLAYER_WIDTH/2, player->y - PLAYER_HEIGHT/2, PLAYER_WIDTH, PLAYER_HEIGHT};
 
     SDL_Surface *surface = IMG_Load("assets/player.png");
     if (surface == NULL) {
@@ -27,4 +28,7 @@ void move(const Uint8 *state, Player *player) {
 
     if (state[SDL_SCANCODE_DOWN] || state[SDL_SCANCODE_S])
         player->y += player->speed;
+
+    player->rect.x = player->x - PLAYER_WIDTH/2;
+    player->rect.y = player->y - PLAYER_HEIGHT/2;
 }
