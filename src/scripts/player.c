@@ -3,12 +3,12 @@
 void playerInit(Player *player, SDL_Renderer *renderer) {
     player->x = 220;
     player->y = 140;
-    player->speed = 10;
+    player->speed = 5;
 
     SDL_Surface *surface = IMG_Load("assets/player.png");
     if (surface == NULL) {
         printf("Error loading player surface\n\n");
-        return;
+        exit(1);
     }
 
     player->texture = SDL_CreateTextureFromSurface(renderer, surface); 

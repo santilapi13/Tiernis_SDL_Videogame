@@ -29,10 +29,10 @@ void doRender(SDL_Renderer *renderer, GameState *game) {
     SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
     SDL_RenderClear(renderer);
 
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    //SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
-    SDL_Rect playerRect = {game->player.x, game->player.y, 100, 100};
-    //SDL_RenderFillRect(renderer, &rect);
+    SDL_Rect playerRect = {game->player.x, game->player.y, 64, 100};
+    //SDL_RenderFillRect(renderer, &playerRect);
     SDL_RenderCopy(renderer, game->player.texture, NULL, &playerRect);   
 
     SDL_RenderPresent(renderer);
