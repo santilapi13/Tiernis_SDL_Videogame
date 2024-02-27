@@ -1,6 +1,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include "../scripts/player.c"
+#include "../scripts/physics.c"
 #define SCREEN_WIDTH 1920
 #define SCREEN_HEIGHT 1080
 

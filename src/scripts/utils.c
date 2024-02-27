@@ -53,6 +53,7 @@ void processEvents(SDL_Window *window, int *done, GameState *game) {
 }
 
 void collisionDetect(GameState *game) { // TODO: Implement collision detection
+    groundCollision(game->floor.y, game->player.rect.h, &game->player.grounded, &game->player.y, &game->player.rect.y);
 }
 
 void doRender(SDL_Renderer *renderer, GameState *game) {
