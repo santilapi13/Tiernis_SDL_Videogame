@@ -52,8 +52,12 @@ void processEvents(SDL_Window *window, int *done, GameState *game) {
     move(SDL_GetKeyboardState(NULL), &game->player);
 }
 
-void collisionDetect(GameState *game) { // TODO: Implement collision detection
-    groundCollision(game->floor.y, game->player.rect.h, &game->player.grounded, &game->player.y, &game->player.rect.y);
+void collisionDetect(GameState *game) { 
+    groundCollision(game->floor.y, game->player.rect.h, &game->player.grounded, &game->player.velocityY, &game->player.y, &game->player.rect.y);
+}
+
+void gravityAffect(GameState *game) {
+    inflictGravity(game->player.grounded, game->player.rect.h, &game->player.velocityY, &game->player.y, &game->player.rect.y);
 }
 
 void doRender(SDL_Renderer *renderer, GameState *game) {

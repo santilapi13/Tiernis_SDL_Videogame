@@ -12,6 +12,7 @@ int main(int argc, char *argv[]) {
 
     while (!done) {
         processEvents(window, &done, &game);
+        gravityAffect(&game);
         collisionDetect(&game);
         doRender(renderer, &game);
         SDL_Delay(10);

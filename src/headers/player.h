@@ -5,6 +5,7 @@
 
 typedef struct {
     int x, y, speed;
+    float velocityY, velocityX;
     SDL_Texture *texture;
     SDL_Rect rect; 
     int grounded;
