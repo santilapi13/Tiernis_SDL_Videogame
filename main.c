@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "src/scripts/utils.c"
+#include "src/scripts/gameManagement.c"
 
 int main(int argc, char *argv[]) {
     SDL_Window *window;
