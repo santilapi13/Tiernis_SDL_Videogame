@@ -1,0 +1,1 @@
+# Tiernis - Game Jam Videogame but in C with SDL2
