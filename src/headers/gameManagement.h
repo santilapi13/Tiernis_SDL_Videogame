@@ -14,6 +14,7 @@ typedef struct {
     Player player;
     SDL_Rect floor;
     Background background;
+    float deltaTime;
 } GameState;
 
 void initializeSDL(SDL_Window **window, SDL_Renderer **renderer);

@@ -14,6 +14,7 @@ void initializeSDL(SDL_Window **window, SDL_Renderer **renderer) {
 }
 
 void loadGame(GameState *game, SDL_Renderer *renderer) {
+    game->deltaTime = 0;
     game->floor = (SDL_Rect) {0, SCREEN_HEIGHT - SCREEN_HEIGHT/15, SCREEN_WIDTH, SCREEN_HEIGHT/15};
     backgroundLoad(&game->background, renderer);
     playerInit(&game->player, renderer, game->floor.y);
@@ -64,7 +65,7 @@ void doRender(SDL_Renderer *renderer, GameState *game) {
     SDL_RenderCopy(renderer, game->background.texture, NULL, &game->background.rect);
 
     Player player = game->player;
-    SDL_RenderCopy(renderer, player.textures[player.actionIndex][player.frameIndex], NULL, &game->player.rect);
+    SDL_RenderCopyEx(renderer, player.textures[player.actionIndex][player.frameIndex], NULL, &game->player.rect, 0, NULL, (player.direction == -1) ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
     //SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     //SDL_RenderFillRect(renderer, &game->floor);
 
