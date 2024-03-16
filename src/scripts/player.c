@@ -11,6 +11,7 @@ void playerInit(Player *player, SDL_Renderer *renderer, int floorHeight) {
     player->actionIndex = 0;
     player->frameIndex = 0;
     player->direction = 1;
+    player->attackCooldown = 0;
     player->lastFrameTime = SDL_GetTicks();
 
 
@@ -58,6 +59,8 @@ void playerInit(Player *player, SDL_Renderer *renderer, int floorHeight) {
 }
 
 void updatePlayerAnimation(Player *player, int action) {
+    if (player->attackCooldown != 0) return;
+
     Uint32 currentTime = SDL_GetTicks();
     Uint32 deltaTime = currentTime - player->lastFrameTime;
 
@@ -74,8 +77,30 @@ void updatePlayerAnimation(Player *player, int action) {
     player->frameIndex = (player->frameIndex + 1) % player->actionsMaxFrames[action];
 }
 
+void updatePlayerOneTimeAnimation(Player *player, int action) {
+    Uint32 currentTime = SDL_GetTicks();
+    Uint32 deltaTime = currentTime - player->lastFrameTime;
+
+    if (deltaTime < TIME_PER_FRAME) return;
+
+    player->lastFrameTime = currentTime;
+
+    if (player->actionIndex != action) {
+        player->actionIndex = action;
+        player->frameIndex = 0;
+        return;
+    }
+
+    if (player->frameIndex == player->actionsMaxFrames[action] - 1) {
+        player->attackCooldown = 0;    
+        return;
+    }
+
+    player->frameIndex = (player->frameIndex + 1);
+}
+
 void move(const Uint8 *state, Player *player) {
-    if (!state[SDL_SCANCODE_LEFT] && !state[SDL_SCANCODE_A] && !state[SDL_SCANCODE_RIGHT] && !state[SDL_SCANCODE_D] && !state[SDL_SCANCODE_UP] && !state[SDL_SCANCODE_W] && player->grounded) {
+    if (!state[SDL_SCANCODE_LEFT] && !state[SDL_SCANCODE_A] && !state[SDL_SCANCODE_RIGHT] && !state[SDL_SCANCODE_D] && !state[SDL_SCANCODE_UP] && !state[SDL_SCANCODE_W] && player->grounded && player->attackCooldown <= 0) {
         updatePlayerAnimation(player, IDLE_ACTION);
         return;
     }
@@ -103,6 +128,12 @@ void move(const Uint8 *state, Player *player) {
 
     player->rect.x = player->x - PLAYER_WIDTH/2;
     player->rect.y = player->y - PLAYER_HEIGHT/2;
+}
+
+void attack(Player *player) {
+    if (player->attackCooldown > 0) return;
+
+    player->attackCooldown = 1;
 }
 
 void jump(Player *player) {

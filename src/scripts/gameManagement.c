@@ -15,6 +15,7 @@ void initializeSDL(SDL_Window **window, SDL_Renderer **renderer) {
 
 void loadGame(GameState *game, SDL_Renderer *renderer) {
     game->deltaTime = 0;
+    game->lastFrameTime = SDL_GetTicks();
     game->floor = (SDL_Rect) {0, SCREEN_HEIGHT - SCREEN_HEIGHT/15, SCREEN_WIDTH, SCREEN_HEIGHT/15};
     backgroundLoad(&game->background, renderer);
     playerInit(&game->player, renderer, game->floor.y);
@@ -40,9 +41,12 @@ void processEvents(SDL_Window *window, int *done, GameState *game) {
                 *done = 1;
             break;
             case SDL_KEYDOWN: {
-                if (event.key.keysym.sym == SDLK_ESCAPE) {
-                    *done = 1;
-                    break;
+                switch (event.key.keysym.sym) {
+                    case SDLK_ESCAPE:
+                        *done = 1;
+                        break;
+                    case SDLK_SPACE:
+                        attack(&game->player);
                 }
             }
             break;
@@ -59,6 +63,15 @@ void collisionDetect(GameState *game) {
 
 void gravityAffect(GameState *game) {
     inflictGravity(game->player.grounded, game->player.rect.h, &game->player.velocityY, &game->player.y, &game->player.rect.y);
+}
+
+void refreshCooldowns(GameState *game) {
+    game->deltaTime = SDL_GetTicks() - game->lastFrameTime;
+    game->lastFrameTime = SDL_GetTicks();
+
+    if (game->player.attackCooldown != 0) {
+        updatePlayerOneTimeAnimation(&(game->player), ATTACK_ACTION);
+    }
 }
 
 void doRender(SDL_Renderer *renderer, GameState *game) {

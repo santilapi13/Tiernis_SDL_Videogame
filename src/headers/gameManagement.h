@@ -15,6 +15,7 @@ typedef struct {
     SDL_Rect floor;
     Background background;
     float deltaTime;
+    float lastFrameTime;
 } GameState;
 
 void initializeSDL(SDL_Window **window, SDL_Renderer **renderer);
@@ -23,5 +24,6 @@ void backgroundLoad(Background *background, SDL_Renderer *renderer);
 void processEvents(SDL_Window *window, int *done, GameState *game);
 void gravityAffect(GameState *game);
 void collisionDetect(GameState *game);
+void refreshCooldowns(GameState *game);
 void doRender(SDL_Renderer *renderer, GameState *game);
 void finishSDL(SDL_Window **window, SDL_Renderer **renderer, GameState *game);

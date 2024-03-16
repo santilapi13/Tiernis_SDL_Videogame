@@ -23,11 +23,13 @@ typedef struct {
     SDL_Texture *textures[ACTIONS_QUANTITY][MAX_FRAMES]; 
     SDL_Rect rect; 
     int grounded;
+    float attackCooldown;
     Uint32 lastFrameTime;
 } Player;
 
 void playerInit(Player *player, SDL_Renderer *renderer, int floorHeight);
 void updatePlayerAnimation(Player *player, int action);
 void move(const Uint8 *state, Player *player);
+void attack(Player *player);
 void jump(Player *player);
 void destroyPlayerTextures(SDL_Texture *textures[ACTIONS_QUANTITY][MAX_FRAMES]);
