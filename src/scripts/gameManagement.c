@@ -19,6 +19,7 @@ void loadGame(GameState *game, SDL_Renderer *renderer) {
     game->floor = (SDL_Rect) {0, SCREEN_HEIGHT - SCREEN_HEIGHT/15, SCREEN_WIDTH, SCREEN_HEIGHT/15};
     backgroundLoad(&game->background, renderer);
     playerInit(&game->player, renderer, game->floor.y);
+    projectilesInit(game->projectiles, renderer);
 }
 
 void backgroundLoad(Background *background, SDL_Renderer *renderer) {
@@ -46,7 +47,7 @@ void processEvents(SDL_Window *window, int *done, GameState *game) {
                         *done = 1;
                         break;
                     case SDLK_SPACE:
-                        attack(&game->player);
+                        attack(&game->player, &game->projectiles[PLAYER_BULLETS_INDEX]);
                 }
             }
             break;
@@ -62,7 +63,17 @@ void collisionDetect(GameState *game) {
 }
 
 void gravityAffect(GameState *game) {
+    int i;
+    ProjectileNode *aux;
     inflictGravity(game->player.grounded, game->player.rect.h, &game->player.velocityY, &game->player.y, &game->player.rect.y);
+    /*
+    for (i = 0 ; i < PROJECTILE_TYPES_AMOUNT; i++) {
+        aux = game->projectiles[i].listHead;
+        while (aux != NULL) {
+            inflictGravity(0, game->projectiles[i].height, &aux->speed.y, &aux->position.y, &aux->rect.y);
+            aux = aux->next;
+        }
+    }*/
 }
 
 void refreshCooldowns(GameState *game) {
@@ -79,6 +90,7 @@ void doRender(SDL_Renderer *renderer, GameState *game) {
 
     Player player = game->player;
     SDL_RenderCopyEx(renderer, player.textures[player.actionIndex][player.frameIndex], NULL, &game->player.rect, 0, NULL, (player.direction == -1) ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
+    renderProjectiles(renderer, game->projectiles);
     //SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     //SDL_RenderFillRect(renderer, &game->floor);
 

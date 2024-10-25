@@ -44,7 +44,6 @@ void playerInit(Player *player, SDL_Renderer *renderer, int floorHeight) {
                 sprintf(filePath, "/player_%s_t%d_%02d.png", actionName, transformation, frame+1);
                 strcpy(path, directoryPath);
                 strcat(path, filePath);
-                printf("Loading image from file %s\n", path);
                 SDL_Surface *surface = IMG_Load(path);
                 if (surface == NULL) {
                     printf("Error loading player surface\n\n");
@@ -52,7 +51,6 @@ void playerInit(Player *player, SDL_Renderer *renderer, int floorHeight) {
                 }
                 player->textures[action][frame] = SDL_CreateTextureFromSurface(renderer, surface);
                 SDL_FreeSurface(surface);
-                printf("Texture created successfully\n\n");
             }
         }
     }
@@ -130,9 +128,16 @@ void move(const Uint8 *state, Player *player) {
     player->rect.y = player->y - PLAYER_HEIGHT/2;
 }
 
-void attack(Player *player) {
+void attack(Player *player, ProjectileList *playerBullets) {
     if (player->attackCooldown > 0) return;
+    Vector2 position;
+    Vector2F speed;
+    position.x = player->x;
+    position.y = player->y;
+    speed.x = PLAYER_BULLET_SPEED * player->direction; // Eventualmente cambiar speed del player por speed en x e y.
+    speed.y = player->velocityY;
 
+    createProjectile(position, speed, player->direction, playerBullets);
     player->attackCooldown = 1;
 }
 

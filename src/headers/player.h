@@ -2,6 +2,7 @@
 #include <SDL2/SDL_image.h>
 #include <string.h>
 #include "../scripts/utils.c"
+#include "../scripts/projectile.c"
 #define PLAYER_WIDTH 120
 #define PLAYER_HEIGHT 132
 #define TRANSFORMATIONS_QUANTITY 1

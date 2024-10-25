@@ -6,11 +6,11 @@ int main(int argc, char *argv[]) {
     SDL_Renderer *renderer;
     int done = 0;
     GameState game;
-
     initializeSDL(&window, &renderer);
     loadGame(&game, renderer);
 
     while (!done) {
+        projectilesMove(game.projectiles);
         processEvents(window, &done, &game);
         gravityAffect(&game);
         collisionDetect(&game);

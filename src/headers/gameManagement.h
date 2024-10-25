@@ -14,6 +14,7 @@ typedef struct {
     Player player;
     SDL_Rect floor;
     Background background;
+    ProjectileList projectiles[PROJECTILE_TYPES_AMOUNT];
     float deltaTime;
     float lastFrameTime;
 } GameState;
